@@ -11,7 +11,6 @@ import csv
 import os
 import sys
 
-
 def dict_parser():
     from pathlib import Path
     # open a file from anywhere in the file system by passing the filename as an argument to the parser module e.g python dict_csv_parser.py --filename
@@ -20,24 +19,35 @@ def dict_parser():
         fpath = Path(filename).parent
         fname = Path(filename).name.rsplit(".", 1)[
             0] + "_new_generated_file.csv"
-        with open(filename, 'r') as f:
-            csv_reader = csv.DictReader(f, delimiter='\t')
+        with open(filename, 'r', encoding='utf8') as f:
+            csv_reader = csv.DictReader(f, delimiter=',')
 
-            with open(os.path.join(fpath, fname), 'a', encoding='utf-8') as new_users_table:
-                # Return fieldnames that only have personal identifiable information (PII)
+            with open(os.path.join(fpath, fname), 'w', encoding='utf8') as new_users_table:
+                # Loop through the csv_reader object and return only fields that contain contain personal identifiable information (PII) and set those fields as fieldnames
                 fieldnames = [field for field in csv_reader.fieldnames if field in [
-                    'user_id', 'username', 'email', 'secret_key', 'password', 'comment_author', 'comment_author_email', 'comment_author_IP']]
-
-
+                    'first_name', 'last_name', 'email', 'phone_number', 'address', 'city', 'state', 'zip_code', 'country', 'comment_author', 'comment_author_email', 'comment_author_url', 'comment_author_IP', 'user_id']]
+        
                 csv_writer = csv.DictWriter(
-                    new_users_table, fieldnames=fieldnames, delimiter="\t"
+                    new_users_table, fieldnames=fieldnames, delimiter=","
                 )
                 csv_writer.writeheader()
 
                 for row in csv_reader:
-                    # Exclude any row that is not included in the fieldnames
-                    if row['user_id'] or row['username'] or row['email'] or row['secret_key'] or row['password'] or row['comment_author'] or row['comment_author_email'] or row['comment_author_IP']:
-                        csv_writer.writerow(row)    
+                    del row['comment_date']
+                    del row['comment_date_gmt']
+                    del row['comment_content']  
+                    del row['comment_karma']    
+                    del row['comment_approved'] 
+                    del row['comment_agent']    
+                    del row['comment_type']
+                    del row['comment_parent']
+                    del row['user_id']
+                    # del row['comment_author_url']
+                    del row['comment_ID']
+                    del row['comment_post_ID']
+                    del row['table']
+
+                    csv_writer.writerow(row)
 
 
 if __name__ == "__main__":

@@ -69,3 +69,55 @@
                     # del row['dbtech_credits_lasttaxation']
 
                     # csv_writer.writerow(row)
+
+                    # delete row if it has no personal information  
+                    # if not any(row.values()):
+                    #     continue
+                    # # delete row if it has no email address
+                    # if not row['email']:
+                    #     continue
+                    # # delete row if it has no phone number
+                    # if not row['phone_number']:
+                    #     continue
+                    # # delete row if it has no first name
+                    # if not row['first_name']:
+                    #     continue
+                    # # delete row if it has no last name
+                    # if not row['last_name']:
+                    #     continue
+                    # # delete row if it has no address
+                    # if not row['address']:
+                    #     continue
+                    # # delete row if it has no city
+                    # if not row['city']:
+                    #     continue
+                    # # delete row if it has no state
+                    # if not row['state']:
+                    #     continue
+                    # # delete row if it has no zip code
+                    # if not row['zip_code']:
+                    #     continue
+                    # # delete row if it has no country
+                    # if not row['country']:
+                    #     continue
+                    # # delete row if it has no user id
+                    # if not row['user_id']:
+                    #     continue
+                    # # delete row if it has no password
+                    # if not row['password']:
+                    #     continue
+                    # # delete row if it has no comment author
+                    # if not row['comment_author']:
+                    #     continue
+                    # # delete row if it has no comment author email
+                    # if not row['comment_author_email']:
+                    #     continue
+                    # # delete row if it has no comment author IP
+                    # if not row['comment_author_IP']:
+                    #     continue
+                    # # delete row if it has no comment author IP
+                    # if not row['comment_author_IP']:
+                    #     continue
+
+                     exclusion_fieldnames = [field for field in csv_reader.fieldnames if field not in [
+                    'comment_date', 'comment_date_gmt','comment_content', 'comment_karma', 'comment_approved', 'comment_approved', 'comment_approved', 'comment_agent', 'comment_type', 'user_activation_key', 'user_status', 'display_name', 'user_registered', 'table']]
