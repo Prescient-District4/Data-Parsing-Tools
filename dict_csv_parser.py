@@ -25,27 +25,31 @@ def dict_parser():
             with open(os.path.join(fpath, fname), 'w', encoding='utf8') as new_users_table:
                 # Loop through the csv_reader object and return only fields that contain contain personal identifiable information (PII) and set those fields as fieldnames
                 fieldnames = [field for field in csv_reader.fieldnames if field in [
-                    'first_name', 'last_name', 'email', 'phone_number', 'address', 'city', 'state', 'zip_code', 'country', 'comment_author', 'comment_author_email', 'comment_author_url', 'comment_author_IP', 'user_id']]
+                    'first_name', 'last_name', 'email', 'phone_number', 'address', 'city', 'state', 'zip_code', 'country', 'comment_author', 'comment_author_email', 'comment_author_url', 'comment_author_IP', 'user_id', 'user_pass', 'user_login', 'ID', 'user_nicename', 'user_url', 'user_email']]
         
                 csv_writer = csv.DictWriter(
                     new_users_table, fieldnames=fieldnames, delimiter=","
                 )
                 csv_writer.writeheader()
 
+                exclusion_fieldnames = [field for field in csv_reader.fieldnames if field not in [
+                    'comment_date', 'comment_date_gmt','comment_content', 'comment_karma', 'comment_approved', 'comment_approved', 'comment_approved', 'comment_agent', 'comment_type', 'user_activation_key', 'user_status', 'display_name', 'user_registered', 'table']]
+
                 for row in csv_reader:
-                    del row['comment_date']
-                    del row['comment_date_gmt']
-                    del row['comment_content']  
-                    del row['comment_karma']    
-                    del row['comment_approved'] 
-                    del row['comment_agent']    
-                    del row['comment_type']
-                    del row['comment_parent']
-                    del row['user_id']
-                    # del row['comment_author_url']
-                    del row['comment_ID']
-                    del row['comment_post_ID']
-                    del row['table']
+                    if 'table' in row:
+                        del row['table']
+                    
+                    if 'display_name' in row:
+                        del row['display_name']
+
+                    if 'user_registered' in row:
+                        del row['user_registered']
+                    
+                    if 'user_status' in row:
+                        del row['user_status']
+
+                    if 'user_activation_key' in row:
+                        del row['user_activation_key']
 
                     csv_writer.writerow(row)
 
