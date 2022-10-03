@@ -119,5 +119,110 @@
                     # if not row['comment_author_IP']:
                     #     continue
 
-                     exclusion_fieldnames = [field for field in csv_reader.fieldnames if field not in [
-                    'comment_date', 'comment_date_gmt','comment_content', 'comment_karma', 'comment_approved', 'comment_approved', 'comment_approved', 'comment_agent', 'comment_type', 'user_activation_key', 'user_status', 'display_name', 'user_registered', 'table']]
+                    #  exclusion_fieldnames = [field for field in csv_reader.fieldnames if field not in [
+                    # 'comment_date', 'comment_date_gmt','comment_content', 'comment_karma', 'comment_approved', 'comment_approved', 'comment_approved', 'comment_agent', 'comment_type', 'user_activation_key', 'user_status', 'display_name', 'user_registered', 'table']]
+
+                    # for row in csv_reader:
+                #     if 'umeta_id' in row:
+                #         del row['umeta_id']
+
+                #     if 'meta_key' in row:
+                #         del row['meta_key']
+
+                #     if 'table' in row:
+                #         del row['table']
+                    
+                #     if 'display_name' in row:
+                #         del row['display_name']
+
+                #     if 'user_registered' in row:
+                #         del row['user_registered']
+                    
+                #     if 'user_status' in row:
+                #         del row['user_status']
+
+                #     if 'user_activation_key' in row:
+                #         del row['user_activation_key']
+                    
+                #     if 'comment_approved' in row:
+                #         del row['comment_approved'] 
+                    
+                #     if 'comment_type' in row:
+                #         del row['comment_type']
+                    
+                #     if 'comment_agent' in row:
+                #         del row['comment_agent']
+                    
+                #     if 'comment_content' in row:
+                #         del row['comment_content']
+
+                #     if 'comment_karma' in row:
+                #         del row['comment_karma']
+                    
+                #     if 'comment_date_gmt' in row:
+                #         del row['comment_date_gmt']
+
+                #     if 'comment_date' in row:
+                #         del row['comment_date']
+                    
+                #     if 'notes' in row:
+                #         del row['notes']    
+                    
+                #     if 'password_reset_expiry' in row:  
+                #         del row['password_reset_expiry']
+                    
+                #     if 'authdata' in row:
+                #         del row['authdata']
+
+                #     if 'signature' in row:  
+                #         del row['signature']
+
+                #     if 'template' in row:
+                #         del row['template']
+
+                #     if 'ticketnotifications' in row:
+                #         del row['ticketnotifications']
+
+                #     if 'password_reset_key' in row:
+                #         del row['password_reset_key']
+
+                #     if 'created_at' in row:
+                #         del row['created_at']
+
+                #     if 'disabled' in row:
+                #         del row['disabled']
+
+                #     if 'roleid' in row:
+                #         del row['roleid']
+
+                #     if 'widget_order' in row:
+                #         del row['widget_order']
+
+                #     if 'hidden_widgets' in row:
+                #         del row['hidden_widgets']
+
+                #     if 'supportdepts' in row:
+                #         del row['supportdepts']
+
+                #     if 'password_reset_data' in row:
+                #         del row['password_reset_data']
+
+                #     if 'language' in row:
+                #         del row['language']
+
+                #     if 'uuid' in row:
+                #         del row['uuid']
+
+                #     if 'loginattempts' in row:
+                #         del row['loginattempts']
+                    
+                #     if 'homewidgets' in row:
+                #         del row['homewidgets']
+
+                #     if 'updated_at' in row:
+                #         del row['updated_at']
+
+                #     if 'authmodule' in row:
+                #         del row['authmodule']
+                      
+                #     csv_writer.writerow(row)
