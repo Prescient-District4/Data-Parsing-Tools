@@ -226,3 +226,6 @@
                 #         del row['authmodule']
                       
                 #     csv_writer.writerow(row)
+
+                #  exclusion_fieldnames = [field for field in csv_reader.fieldnames if field not in [
+                #     'comment_date', 'comment_date_gmt','comment_content', 'comment_karma', 'comment_approved', 'comment_approved', 'comment_approved', 'comment_agent', 'comment_type', 'user_activation_key', 'user_status', 'display_name', 'user_registered', 'table', 'notes', 'password_reset_expiry', 'authdata', 'signature', 'template', 'ticketnotifications', 'password_reset_key', 'created_at', 'disabled', 'roleid', 'widget_order', 'hidden_widgets', 'supportdepts', 'password_reset_data', 'language', 'uuid', 'loginattempts', 'homewidgets', 'updated_at', 'authmodule', 'banktype', 'datecreated', 'bankcode', 'gatewayid', 'pwresetexpiry', 'companyname', 'securityqid', 'defaultgateway', 'separateinvoices', 'emailoptout', 'disableautocc', 'groupid', 'cardtype', 'cardlastfour', 'cardnum', 'pwresetkey', 'bankname', 'overideduenotices', 'latefeeoveride', 'overrideautoclose', 'taxexempt', 'status', 'billingcid']]

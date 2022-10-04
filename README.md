@@ -1,2 +1,3 @@
 # Data-Parsing-Tools
-My personal tools for data parsing.
+
+Personal tools for parsing data from various sources and formats
