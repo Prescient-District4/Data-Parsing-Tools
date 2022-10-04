@@ -11,7 +11,7 @@ import csv
 import os
 import sys
 
-# For any CSV files that are too large to be parsed, we can trick the parser by changing the max size of the file that can be parsed
+# For any CSV files that are too large to be parsed, we can trick the parser by changing the max
 maxInt = sys.maxsize
 
 while True:
@@ -40,21 +40,19 @@ def dict_parser():
         with open(filename, 'r', encoding='utf8') as f:
             csv_reader = csv.DictReader(f, delimiter=',')
 
-            with open(os.path.join(fpath, fname), 'w', encoding='utf8') as new_table:
+            with open(os.path.join(fpath, fname), 'w', encoding='utf8') as new_users_table:
                 # Loop through the csv_reader object and return only fields that contain contain personal identifiable information (PII) and set those fields as fieldnames
                 fieldnames = [field for field in csv_reader.fieldnames if field in [
                     'first_name', 'firstname', 'last_name', 'lastname', 'email', 'password', 'passwordhash', 'phone_number', 'address', 'city', 'state', 'zip_code', 'country', 'comment_author', 'comment_author_email', 'comment_author_url', 'comment_author_IP', 'user_id', 'user_pass', 'user_login', 'ID', 'user_nicename', 'user_url', 'user_email', 'meta_value', 'username','phonenumber', 'bankacct', 'currency', 'address2', 'address1', 'postcode', 'issuenumber', 'startdate', 'credit', 'email_preferences', 'host', 'hostname', 'ip', 'ipaddress', 'ip_address', 'ipaddr', 'userid', 'nameservers', 'amount', 'ordernum', 'invoiceid', 'paymentmethod', 'domain', 'firstpayment', 'dedicatedip', 'company', 'companyname', 'name', 'nickname', 'confirmed_ip', "lat", "lon", "latitude", "longitude", "Social title", "First name", "Last name", "Email address", 'iso', 'iso3', 'phonecode', 'addr_title',  'phone_num', ' addr_title', 'location', 'flat_no', 'billing_addr', 'billing_address', 'profile', 'email_to', 'email_from', 'email_tobcc', 'email_subject', 'fk_user', 'fk_user_author', 'owner_address', 'birthday', 'birth_day', 'dob', 'zip', 'skype', 'skype_addr', 'skype_address', 'phone', 'phone_mobile', 'gender', 'sex', 'job', 'office_phone', 'user_mobile', 'salary', 'client_ip_address']]
         
                 csv_writer = csv.DictWriter(
-                    new_table, fieldnames=fieldnames, delimiter=","
+                    new_users_table, fieldnames=fieldnames, delimiter=","
                 )
                 csv_writer.writeheader()
 
                 for row in csv_reader:
                     # Loop through the csv_reader object and return only fields that contain contain personal identifiable information (PII) and write those fields to the new file
-                    # delete empty rows
-                    csv_writer.writerow({k: v for k, v in row.items() if k in fieldnames})
-                    # csv_writer.writerow({k: row[k] for k in fieldnames})
+                    csv_writer.writerow({k: row[k] for k in fieldnames})
                     
                     # Print success message to the console
                 print('Successfully parsed file and saved to cleaned folder')
