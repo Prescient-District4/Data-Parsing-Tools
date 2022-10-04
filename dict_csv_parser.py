@@ -52,7 +52,9 @@ def dict_parser():
 
                 for row in csv_reader:
                     # Loop through the csv_reader object and return only fields that contain contain personal identifiable information (PII) and write those fields to the new file
-                    csv_writer.writerow({k: row[k] for k in fieldnames})
+                    # delete empty rows
+                    csv_writer.writerow({k: v for k, v in row.items() if k in fieldnames})
+                    # csv_writer.writerow({k: row[k] for k in fieldnames})
                     
                     # Print success message to the console
                 print('Successfully parsed file and saved to cleaned folder')
