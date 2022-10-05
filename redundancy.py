@@ -237,3 +237,8 @@
             #         # If the row contains PII, write the row to the new csv file
             #         if row["meta_key"] in pii_row:
             #             writer.writerow({k: row[k] for k in pii})
+
+            # this works
+            # for row in reader:
+            #     if row["meta_key"] in pii:
+            #         writer.writerow(row)

@@ -63,7 +63,7 @@ def usermeta_cleaner():
     new_file = os.path.join(os.path.dirname(fpath), os.path.basename(fpath) + '_usermeta_cleaned.csv')
 
      # Create a list of PII
-    pii = [field for field in csv.DictReader(open(fpath)).fieldnames if field not in [
+    pii =  [
         "first_name",
         "firstname"
         "nickname"
@@ -99,77 +99,31 @@ def usermeta_cleaner():
         "stripe",
         "paypal",
         "venmo",
-    ]]
-
-    # Create a list of rows that contain PII
-    pii_rows = []
-
-    # Open the csv file
-    with open(csv_file, "r") as f:
-        # Create a csv reader object
-        reader = csv.DictReader(f, delimiter=',')
-
-        # Iterate over the rows in the csv file
-        for row in reader:
-            # Iterate over the PII list
-            for item in pii:
-                # If the item is in the row, add the row to the pii_rows list
-                if item in row:
-                    pii_rows.append(row)
-
-    # Create a list of user IDs
-    user_ids = []
-
-    # Open the csv file
-    with open(csv_file, "r") as f:
-        # Create a csv reader object
-        reader = csv.DictReader(f, delimiter=',')
-
-        # Iterate over the rows in the csv file
-        for row in reader:
-            # If the row contains the user ID, add the user ID to the user_ids list
-            if "user_id" in row:
-                user_ids.append(row[1])
-
-    # Create a list of rows that contain user IDs
-    user_id_rows = []
-
-    # Open the csv file
-    with open(csv_file, "r") as f:
-        # Create a csv reader object
-        reader = csv.DictReader(f, delimiter=',')
-
-        # Iterate over the rows in the csv file
-        for row in reader:
-            # Iterate over the user_ids list
-            for user_id in user_ids:
-                # If the user ID is in the row, add the row to the user_id_rows list
-                if user_id in row:
-                    user_id_rows.append(row)
-
+    ]
     
     # On the meta_key column, find the rows that contain PII, remove all that do  not contain PII or empty values
 
     # Open the csv file
-    with open(csv_file, "r", encoding='utf-8') as f:
+    with open(csv_file, "r", encoding='utf8') as f:
         # Create a csv reader object
         reader = csv.DictReader(f, delimiter=",")
 
         # Write to the new file
-        with open(os.path.join(fpath, new_file), "w", encoding='utf-8', newline="") as f:
+        with open(os.path.join(fpath, new_file), "w", encoding='utf8', newline="") as new_usermeta:
 
             fieldnames = reader.fieldnames
             # Create a csv writer object
-            writer = csv.DictWriter(f, fieldnames=fieldnames, delimiter=",")
+            writer = csv.DictWriter(new_usermeta, fieldnames=fieldnames, delimiter=",")
 
             # Write the header row
             writer.writeheader()
-
-            for line in reader:
-                if line in pii_rows:
-                    # remove empty rows created by csv newline characters
-                    if line != "":
-                        writer.writerow(line)
+            # return all the rows that contain PII under the meta_key column as defined in the pii list
+            for row in reader:
+                if row["meta_key"] in pii:
+                    writer.writerow({k: v for k, v in row.items() if v != ""})
+                    # writer.writerow({k: row[k] for k in fieldnames})
+                    # writer.writerow(row)  
+                    print(row)    
 
 if __name__ == "__main__":
     usermeta_cleaner()
