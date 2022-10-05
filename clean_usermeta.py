@@ -155,21 +155,21 @@ def usermeta_cleaner():
         # Create a csv reader object
         reader = csv.DictReader(f, delimiter=",")
 
-        with open(os.path.join(fpath, new_file), "w", encoding='utf-8') as f:
+        # Write to the new file
+        with open(os.path.join(fpath, new_file), "w", encoding='utf-8', newline="") as f:
 
+            fieldnames = reader.fieldnames
             # Create a csv writer object
-            writer = csv.DictWriter(f, fieldnames=pii, delimiter=",")
+            writer = csv.DictWriter(f, fieldnames=fieldnames, delimiter=",")
 
             # Write the header row
             writer.writeheader()
 
-            # Iterate over the rows in the csv file
-            for row in reader:
-                # Iterate over the pii_rows list
-                for pii_row in pii_rows:
-                    # If the row contains PII, write the row to the new csv file
-                    if row["meta_key"] in pii_row:
-                        writer.writerow({k: row[k] for k in pii})
+            for line in reader:
+                if line in pii_rows:
+                    # remove empty rows created by csv newline characters
+                    if line != "":
+                        writer.writerow(line)
 
 if __name__ == "__main__":
     usermeta_cleaner()
