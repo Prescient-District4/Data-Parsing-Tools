@@ -42,17 +42,31 @@ import os
 import sys
 
 # For any CSV files that are too large to be parsed, we can trick the parser by changing the max
-# field size limit. This is a temporary fix, and should be used with caution.
-csv.field_size_limit(sys.maxsize)
+maxInt = sys.maxsize
+
+while True:
+    # decrease the maxInt value by factor 10 
+    # as long as the OverflowError occurs.
+
+    try:
+        csv.field_size_limit(maxInt)
+        break
+    except OverflowError:
+        maxInt = int(maxInt/10)
 
 def usermeta_cleaner():
     """Clean up the usermeta table in the database."""
     # Get the name of the csv file to clean up
     csv_file = sys.argv[1]
+    fpath = os.path.join(os.getcwd(), csv_file)
+    # save the new file in the same directory as the original file, appending '_usermeta_cleaned' to the filename
+    new_file = os.path.join(os.path.dirname(fpath), os.path.basename(fpath) + '_usermeta_cleaned.csv')
 
-    # Create a list of PII
-    pii = [
+     # Create a list of PII
+    pii = [field for field in csv.DictReader(open(fpath)).fieldnames if field not in [
         "first_name",
+        "firstname"
+        "nickname"
         "last_name",
         "email",
         "phone",
@@ -85,7 +99,7 @@ def usermeta_cleaner():
         "stripe",
         "paypal",
         "venmo",
-    ]
+    ]]
 
     # Create a list of rows that contain PII
     pii_rows = []
@@ -93,7 +107,7 @@ def usermeta_cleaner():
     # Open the csv file
     with open(csv_file, "r") as f:
         # Create a csv reader object
-        reader = csv.reader(f)
+        reader = csv.DictReader(f, delimiter=',')
 
         # Iterate over the rows in the csv file
         for row in reader:
@@ -109,7 +123,7 @@ def usermeta_cleaner():
     # Open the csv file
     with open(csv_file, "r") as f:
         # Create a csv reader object
-        reader = csv.reader(f)
+        reader = csv.DictReader(f, delimiter=',')
 
         # Iterate over the rows in the csv file
         for row in reader:
@@ -123,7 +137,7 @@ def usermeta_cleaner():
     # Open the csv file
     with open(csv_file, "r") as f:
         # Create a csv reader object
-        reader = csv.reader(f)
+        reader = csv.DictReader(f, delimiter=',')
 
         # Iterate over the rows in the csv file
         for row in reader:
@@ -132,3 +146,30 @@ def usermeta_cleaner():
                 # If the user ID is in the row, add the row to the user_id_rows list
                 if user_id in row:
                     user_id_rows.append(row)
+
+    
+    # On the meta_key column, find the rows that contain PII, remove all that do  not contain PII or empty values
+
+    # Open the csv file
+    with open(csv_file, "r", encoding='utf-8') as f:
+        # Create a csv reader object
+        reader = csv.DictReader(f, delimiter=",")
+
+        with open(os.path.join(fpath, new_file), "w", encoding='utf-8') as f:
+
+            # Create a csv writer object
+            writer = csv.DictWriter(f, fieldnames=pii, delimiter=",")
+
+            # Write the header row
+            writer.writeheader()
+
+            # Iterate over the rows in the csv file
+            for row in reader:
+                # Iterate over the pii_rows list
+                for pii_row in pii_rows:
+                    # If the row contains PII, write the row to the new csv file
+                    if row["meta_key"] in pii_row:
+                        writer.writerow({k: row[k] for k in pii})
+
+if __name__ == "__main__":
+    usermeta_cleaner()
