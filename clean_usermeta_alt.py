@@ -166,9 +166,14 @@ def usermeta_cleaner() -> Any:
             for row in reader:
                 try:
                     if row['meta_key'] not in not_pii and row['meta_value'] != '':
-                        writer.writerow({k: v for k, v in row.items() if v != ""}) # alternatively, use writer.writerow(row)
-                        # This line is for debugging
-                        print({k: v for k, v in row.items() if v != ""})    # alternatively, you can use print(row) 
+                        # for any row that remains in the meta_key column, make it a header column in the new file. Link to the user_id in the new file
+                        # e.g. if the meta_key is 'first_name', the new file will have a column called 'first_name' and the value will be the value in the meta_value column
+                        writer.writerow({row['meta_key']: row['meta_value']})
+                        # debugging
+                        print(row['meta_key'])
+                except UnicodeEncodeError:  
+                    # if the row contains a non-ascii character, skip it
+                    continue
                 except KeyError:
                     pass
 
