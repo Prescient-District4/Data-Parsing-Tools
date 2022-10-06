@@ -40,6 +40,7 @@ The script should delete all rows that do not have any personal identifiable inf
 import csv  
 import os
 import sys
+from typing import Any
 
 # For any CSV files that are too large to be parsed, we can trick the parser by changing the max
 maxInt = sys.maxsize
@@ -54,51 +55,93 @@ while True:
     except OverflowError:
         maxInt = int(maxInt/10)
 
-def usermeta_cleaner():
+def usermeta_cleaner() -> None:
     """Clean up the usermeta table in the database."""
     # Get the name of the csv file to clean up
     csv_file = sys.argv[1]
     fpath = os.path.join(os.getcwd(), csv_file)
-    # save the new file in the same directory as the original file, appending '_usermeta_cleaned' to the filename
+    # save the new file in the same directory as the original file, appending '_usermeta_cleaned' before the file extension
+    # e.g. if the original file is 'usermeta.csv', the new file will be 'usermeta_usermeta_cleaned.csv'
+    # new_file = csv_file.split('.')[0] + '_usermeta_cleaned' + csv_file.split('.')[1] 
     new_file = os.path.join(os.path.dirname(fpath), os.path.basename(fpath) + '_usermeta_cleaned.csv')
 
      # Create a list of PII
-    pii =  [
-        "first_name",
-        "firstname"
-        "nickname"
-        "last_name",
-        "email",
-        "phone",
-        "address",
-        "city",
-        "state",
-        "zip",
-        "country",
-        "comment_author",
-        "comment_author_email",
-        "ip",
-        "twitter",
-        "facebook",
-        "instagram",
-        "linkedin",
-        "pinterest",
-        "youtube",
-        "googleplus",
-        "skype",
-        "snapchat",
-        "reddit",
-        "tumblr",
-        "github",
-        "bitbucket",
-        "gitlab",
-        "stackoverflow",
-        "hackernews",
-        "quora",
-        "medium",
-        "stripe",
-        "paypal",
-        "venmo",
+    not_pii =  [
+        'gettr',
+        '_woocommerce_persistent_cart',
+        'wp_woocommerce_persistent_cart',
+        'wpseo_keyword_analysis_last_run',
+        'wpseo_keyword_analysis-disable',
+        'wpseo_linkdex',
+        '_yoast_wpseo_profile_updated',
+        'syntax_highlighting',
+        'dismissed_wp_pointers',
+        '_yoast_wpseo_profile_updated',
+        'last_update',
+        'wpm8_googlesitekit_site_verified_meta',
+        'mailchimp_woocommerce_is_subscribed',
+        'meta-box-order_post',
+        'comment_shortcuts',
+        'rich_editing',
+        'metaboxhidden_nav-menus',
+        '_woocommerce_tracks_anon_id',
+        '_yoast_wpseo_profile_updated',
+        'wc_last_active',
+        'mailchimp_woocommerce_is_subscribed',
+        'wpm8_dashboard_quick_press_last_post_id',
+        'locale',
+        'admin_color',  
+        'use_ssl',
+        'show_welcome_panel',
+        'dismissed_wp_pointers',
+        'wp_user-settings',
+        'wp_user-settings-time',
+        'wp_user_roles',
+        'wp_capabilities',
+        'wp_user_level',
+        'wp_dashboard_quick_press_last_post_id',
+        'wp_dashboard_primary',
+        'wp_dashboard_secondary',
+        'obfx_ignore_visit_dashboard_notice',
+        'wpm8_googlesitekit_profile',
+        '_woocommerce_persistent_cart_1',
+        'community-events-location',
+        'closedpostboxes_dashboard',
+        'wpm8_googlesitekit_access_token',
+        'session_tokens',
+        'closedpostboxes_post',
+        'jetpack_tracks_anon_id',
+        'wpm8_dashboard_quick_press_last_post_id',
+        'wpm8_googlesitekit_refresh_token',
+        'wpm8_googlesitekit_analytics_adsense_linked',
+        'wpm8_googlesitekit_analytics',
+        'show_admin_bar_front',
+        'meta-box-order_dashboard',
+        'wpm8_googlesitekit_additional_auth_scopes',
+        'wpm8_googlesitekit_analytics_ownership',
+        'wpm8_googlesitekit_transient_timeout_googlesitekit_user_input_settings',
+        'wpm8_googlesitekit_auth_scopes',
+        'wpm8_user_level',
+        'wpm8_capabilities',
+        'managenav-menuscolumnshidden',
+        'wpm8_yoast_notifications',
+        'wpm8_googlesitekit_site_verification_file',
+        'wpm8_googlesitekitpersistent_dismissed_tours',
+        'metaboxhidden_post',
+        'metaboxhidden_dashboard',
+        'wpm8_googlesitekitpersistent_initial_version',
+        'bwg_photo_gallery',
+        'jetpack_tracks_wpcom_id',
+        'wpm8_user-settings-time',
+        'wpm8_user-settings',
+        'wpm8_user-settings',
+        'wpm8_googlesitekit_access_token_expires_in',
+        'wpm8_googlesitekitpersistent_initial_version',
+        'dismissed_update_notice',
+        'wpm8_googlesitekit_transient_googlesitekit_user_input_settings',
+        'wpm8_googlesitekit_access_token_created_at',
+        'wpm8_googlesitekit_user_input_state',
+
     ]
     
     # On the meta_key column, find the rows that contain PII, remove all that do  not contain PII or empty values
@@ -111,17 +154,24 @@ def usermeta_cleaner():
         # Write to the new file
         with open(os.path.join(fpath, new_file), "w", encoding='utf8', newline="") as new_usermeta:
 
+            # Set fieldnames but exclude the umeta_id column
+            # fieldnames = [field for field in reader.fieldnames if field != 'umeta_id']
             fieldnames = reader.fieldnames
             # Create a csv writer object
             writer = csv.DictWriter(new_usermeta, fieldnames=fieldnames, delimiter=",")
 
             # Write the header row
             writer.writeheader()
-            # return all the rows that contain PII under the meta_key column as defined in the pii list
             for row in reader:
-                if row["meta_key"] in pii:
-                    writer.writerow({k: v for k, v in row.items() if v != ""})
-                    print(row)    
+                try:
+                    if row['meta_key'] not in not_pii and row['meta_value'] != '':
+                        # writer.writerow(row)
+                        writer.writerow({k: v for k, v in row.items() if v != ""})
+                        print({k: v for k, v in row.items() if v != ""})    
+                except KeyError:
+                    pass
+
+                # if row["meta_key"] not in not_pii:
 
 if __name__ == "__main__":
     usermeta_cleaner()
