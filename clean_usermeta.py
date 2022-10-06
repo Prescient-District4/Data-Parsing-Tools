@@ -121,8 +121,6 @@ def usermeta_cleaner():
             for row in reader:
                 if row["meta_key"] in pii:
                     writer.writerow({k: v for k, v in row.items() if v != ""})
-                    # writer.writerow({k: row[k] for k in fieldnames})
-                    # writer.writerow(row)  
                     print(row)    
 
 if __name__ == "__main__":
