@@ -154,8 +154,8 @@ def usermeta_cleaner() -> None:
         # Write to the new file
         with open(os.path.join(fpath, new_file), "w", encoding='utf8', newline="") as new_usermeta:
 
-            # Set fieldnames but exclude the umeta_id column
-            # fieldnames = [field for field in reader.fieldnames if field != 'umeta_id']
+            # Set fieldnames but delete the umeta_id column
+            
             fieldnames = reader.fieldnames
             # Create a csv writer object
             writer = csv.DictWriter(new_usermeta, fieldnames=fieldnames, delimiter=",")
@@ -167,6 +167,7 @@ def usermeta_cleaner() -> None:
                     if row['meta_key'] not in not_pii and row['meta_value'] != '':
                         # writer.writerow(row)
                         writer.writerow({k: v for k, v in row.items() if v != ""})
+                        # This line is for debugging
                         print({k: v for k, v in row.items() if v != ""})    
                 except KeyError:
                     pass
