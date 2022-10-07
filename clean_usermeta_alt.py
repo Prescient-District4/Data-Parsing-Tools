@@ -169,12 +169,16 @@ def usermeta_cleaner() -> Any:
             # Loop through the csv file
             for row in reader:
                 try:
-                    if row['meta_key'] not in not_pii and row['meta_value'] != '':  
+                    if row['meta_key'] not in not_pii and row['meta_value'] != '':
+                        # link the user_id to the meta_value  
                         row['meta_value'] = row['meta_key'] + ': ' + row['meta_value']
+                        # make rows in meta_key be new fieldnames and the meta values be the values of those fields
 
                         writer.writerow({k: row[k] for k in fieldnames})
+                       
                         # debugging
-                        print({k: v for k, v in row.items() if v != ""})
+                        
+                        print({k: row[k] for k in fieldnames})
                 except UnicodeEncodeError:  
                     # if the row contains a non-ascii character, skip it
                     continue
