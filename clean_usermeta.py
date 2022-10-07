@@ -154,7 +154,7 @@ def usermeta_cleaner() -> Any:
         reader = csv.DictReader(f, delimiter=",")
 
         # Write to the new file
-        with open(os.path.join(fpath, new_file), "w", encoding='utf8', newline="") as new_usermeta:
+        with open(os.path.join(fpath, new_file), "a", encoding='utf8', newline="") as new_usermeta:
             fieldnames = reader.fieldnames
             # Create a csv writer object
             writer = csv.DictWriter(new_usermeta, fieldnames=fieldnames, delimiter=",")
