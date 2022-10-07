@@ -242,3 +242,5 @@
             # for row in reader:
             #     if row["meta_key"] in pii:
             #         writer.writerow(row)
+            # Very important line
+            #  writer.writerow({k: v for k, v in row.items() if v != ''})

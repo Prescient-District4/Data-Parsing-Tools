@@ -145,8 +145,12 @@ def usermeta_cleaner() -> Any:
         'wpm8_googlesitekit_transient_googlesitekit_user_input_settings',
         'wpm8_googlesitekit_access_token_created_at',
         'wpm8_googlesitekit_user_input_state',
+        'nav_menu_recently_edited'
 
     ]
+
+    # Create a user list
+    users = []
 
     # Open the csv file
     with open(csv_file, "r", encoding='utf8') as f:
@@ -155,7 +159,7 @@ def usermeta_cleaner() -> Any:
 
         # Write to the new file
         with open(os.path.join(fpath, new_file), "w", encoding='utf8', newline="") as new_usermeta:
-            fieldnames = reader.fieldnames
+            fieldnames = [field for field in reader.fieldnames if field in ['user_id', 'userid', 'meta_key', 'meta_value']]
             # Create a csv writer object
             writer = csv.DictWriter(new_usermeta, fieldnames=fieldnames, delimiter=",")
 
@@ -165,12 +169,12 @@ def usermeta_cleaner() -> Any:
             # Loop through the csv file
             for row in reader:
                 try:
-                    if row['meta_key'] not in not_pii and row['meta_value'] != '':
-                        # for any row that remains in the meta_key column, make it a header column in the new file. Link to the user_id in the new file
-                        # e.g. if the meta_key is 'first_name', the new file will have a column called 'first_name' and the value will be the value in the meta_value column
-                        writer.writerow({k: v for k, v in row.items() if k in fieldnames})
+                    if row['meta_key'] not in not_pii and row['meta_value'] != '':  
+                        row['meta_value'] = row['meta_key'] + ': ' + row['meta_value']
+
+                        writer.writerow({k: row[k] for k in fieldnames})
                         # debugging
-                        print(row)
+                        print({k: v for k, v in row.items() if v != ""})
                 except UnicodeEncodeError:  
                     # if the row contains a non-ascii character, skip it
                     continue
