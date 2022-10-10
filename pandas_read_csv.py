@@ -41,36 +41,23 @@ The script should delete all rows that do not have any personal identifiable inf
     33. Venmo handle
 """
 
-import csv  
+# using pandas to read the csv file
+
+import pandas as pd
 import os
 import sys
-from typing import Any
 
-# For any CSV files that are too large to be parsed, we can trick the parser by changing the max
-maxInt = sys.maxsize
 
-while True:
-    # decrease the maxInt value by factor 10 
-    # as long as the OverflowError occurs.
+def pandas_read_csv():
+    """
+    Clean up the usermeta table in the database
+    """
 
-    try:
-        csv.field_size_limit(maxInt)
-        break
-    except OverflowError:
-        maxInt = int(maxInt/10)
-
-def usermeta_cleaner() -> Any:
-    """Clean up the usermeta table in the database."""
-    # Get the name of the csv file to clean up
-    csv_file = sys.argv[1]
-    fpath = os.path.join(os.getcwd(), csv_file)
-    # save the new file in the same directory as the original file, appending '_usermeta_cleaned' before the file extension
-    # e.g. if the original file is 'usermeta.csv', the new file will be 'usermeta_usermeta_cleaned.csv'
-    # new_file = csv_file.split('.')[0] + '_usermeta_cleaned' + csv_file.split('.')[1] 
-    new_file = os.path.join(os.path.dirname(fpath), os.path.basename(fpath) + '_usermeta_cleaned.csv')
+    # Read the csv file passed as an argument
+    df = pd.read_csv(sys.argv[1])
 
     # Create a list of PII
-    not_pii =  [
+    not_pii = [
         'gettr',
         '_woocommerce_persistent_cart',
         'wp_woocommerce_persistent_cart',
@@ -94,7 +81,7 @@ def usermeta_cleaner() -> Any:
         'mailchimp_woocommerce_is_subscribed',
         'wpm8_dashboard_quick_press_last_post_id',
         'locale',
-        'admin_color',  
+        'admin_color',
         'use_ssl',
         'show_welcome_panel',
         'dismissed_wp_pointers',
@@ -149,41 +136,33 @@ def usermeta_cleaner() -> Any:
 
     ]
 
-    # Create a user list
-    users = []
+    # Remove all rows that do not have any PII in them and meta_value is not null
+    df = df[~df['meta_key'].isin(not_pii) & df['meta_value'].notnull()]
 
-    # Open the csv file
-    with open(csv_file, "r", encoding='utf8') as f:
-        # Create a csv reader object
-        reader = csv.DictReader(f, delimiter=",")
+    # make unique list of meta_key as new columns
+    new_columns = df['meta_key'].unique()
 
-        # Write to the new file
-        with open(os.path.join(fpath, new_file), "w", encoding='utf8', newline="") as new_usermeta:
-            fieldnames = [field for field in reader.fieldnames if field in ['user_id', 'userid', 'meta_key', 'meta_value']]
-            # Create a csv writer object
-            writer = csv.DictWriter(new_usermeta, fieldnames=fieldnames, delimiter=",")
+    # Print the number of rows that were deleted
+    print(f"Number of rows deleted: {len(df)}")
 
-            # Write the header row
-            writer.writeheader()
+    # Print all rows of the csv file without the umeta_id column and all its rows, append the new columns to the csv sort the rows by user_id
+    data = df.drop('umeta_id', axis=1).append(pd.DataFrame(
+        columns=new_columns)).sort_values(by=['userid'])
 
-            # Loop through the csv file
-            for row in reader:
-                try:
-                    if row['meta_key'] not in not_pii and row['meta_value'] != '':
-                        # link the user_id to the meta_value  
-                        row['meta_value'] = row['meta_key'] + ': ' + row['meta_value']
-                        # make rows in meta_key be new fieldnames and the meta values be the values of those fields
+    # Print the first 5 rows of data to the console
+    # print(data)
 
-                        writer.writerow({k: row[k] for k in fieldnames})
-                       
-                        # debugging
-                        
-                        print({k: row[k] for k in fieldnames})
-                except UnicodeEncodeError:  
-                    # if the row contains a non-ascii character, skip it
-                    continue
-                except KeyError:
-                    pass
+    # Populate the new columns with the meta_value of the corresponding meta_key and user_id, rows with NaN leave them blank and print the first all rows of data to the console
+    data = data.groupby(['userid', 'meta_key'])[
+        'meta_value'].first().unstack().fillna('')
+    print(data)
+
+    # print(data.groupby(['userid', 'meta_key'])['meta_value'].apply(
+    #     lambda x: x.values.tolist()).unstack())
+
+    # Write data to a csv file
+    data.to_csv('cleaned_usermeta.csv')
+
 
 if __name__ == "__main__":
-    usermeta_cleaner()
+    pandas_read_csv()
