@@ -58,6 +58,46 @@ def pandas_read_csv():
 
     # Create a list of PII
     not_pii = [
+        'Yassercapabilities',
+        '_aioseo_plugin_review_dismissed',
+        '_aioseo_settings',
+        '_itsec_primary_dashboard_widget',
+        '_itsec_primary_dashboard_widget_dismissed',
+        'edit_post_per_page',
+        'duplicator_pro_created_format',
+        'itsec_logs_page_screen_options',
+        'lyrics_capabilities',
+        'lyrics_googlesitekit_additional_auth_scopes',
+        'lyrics_googlesitekit_auth_scopes',
+        'lyrics_googlesitekit_refresh_token'
+        'lyrics_googlesitekit_profile',
+        'lyrics_googlesitekit_transient_timeout_googlesitekit_user_input_settings',
+        'lyrics_googlesitekit_site_verification_file',
+        'lyrics_statistics',
+        'lyrics_googlesitekit_site_verified_meta',
+        'lyrics_googlesitekit_transient_googlesitekit_user_input_settings',
+        'lyrics_googlesitekit_user_input_state',
+        'lyrics_googlesitekitpersistent_initial_version',
+        'screen_layout_post',
+        'lyrics_googlesitekitpersistent_dismissed_tours',
+        'lyrics_statistics',
+        'lyrics_user_level',
+        'lyrics_user',
+        'manageedit'
+        'rank_math_metabox_checklist_layout',
+        'metaboxhidden_page',
+        'rocketcdn_dismiss_notice',
+        'itsec_user_activity_last_seen',
+        '_itsec_primary_dashboard',
+        'woocommerce_admin_android_app_banner_dismissed',
+        'woocommerce_admin_task_list_tracked_started_tasks',
+        'Yasserdashboard_quick_press_last_post_id',
+        'Yasseruser-settings',
+        'Yasseruser-settings-time',
+        'Yasseruser_level',
+        'wpmf_user_level',
+        'wpmf_dashboard_quick_press_last_post_id',
+        'wpmf_capabilities',
         'gettr',
         '_woocommerce_persistent_cart',
         'wp_woocommerce_persistent_cart',
@@ -132,8 +172,48 @@ def pandas_read_csv():
         'wpm8_googlesitekit_transient_googlesitekit_user_input_settings',
         'wpm8_googlesitekit_access_token_created_at',
         'wpm8_googlesitekit_user_input_state',
-        'nav_menu_recently_edited'
-
+        'nav_menu_recently_edited',
+        'lyrics_googlesitekit_access_token_created_at',
+        'lyrics_googlesitekit_access_token_expires_in',
+        'lyrics_googlesitekit_profile',
+        'lyrics_googlesitekit_refresh_token',
+        'lyrics_user-settings-time',
+        'lyrics_user-settings',
+        'lyrics_user',
+        'manageedit',
+        'lyrics_dashboard_quick_press_last_post_id',
+        'wfls-last-login',
+        'rank_math_metabox_checklist_layout',
+        'meta-box-order_toplevel_page_aiowpsec',
+        'manageedit-pagecolumnshidden_default',
+        'manageedit-pagecolumnshidden',
+        'lyrics_googlesitekit_access_token',
+        'lyrics_f7_hide_welcome_panel_on',
+        'manageedit-postcolumnshidden',
+        'manageedit-postcolumnshidden_default',
+        'meta-box-order_product',
+        'metaboxhidden_product',
+        'paying_customer',
+        'wpcf7_hide_welcome_panel_on',
+        'ignore_fbe_not_installed_notice',
+        'icl_admin_language_migrated_to_wp47',
+        'icl_admin_language_migrated_to_wp48',
+        'icl_admin_language',
+        'elementor_introduction',
+        'edit_page_per_page',
+        'dismissed_wc_admin_notice',
+        'dismissed_no_secure_connection_notice',
+        'closedpostboxes_product',
+        'meta-box-order_page',
+        'SERVMASK_PREFIX_nav_menu_recently_edited',
+        'SERVMASK_PREFIX_user-settings',
+        'SERVMASK_PREFIX_user-settings-time',
+        'SERVMASK_PREFIX_user_level',
+        'SERVMASK_PREFIX_yoast_notifications',
+        '_woocommerce_load_saved_cart_after_login',
+        '_wpml_user_dismissed_notices',
+        'SERVMASK_PREFIX_dashboard_quick_press_last_post_id',
+        'SERVMASK_PREFIX_capabilities',
     ]
 
     # Remove all rows that do not have any PII in them and meta_value is not null
@@ -142,26 +222,37 @@ def pandas_read_csv():
     # make unique list of meta_key as new columns
     new_columns = df['meta_key'].unique()
 
-    # Print the number of rows that were deleted
+    '''
+    Print the number of rows that were deleted
+    '''
     print(f"Number of rows deleted: {len(df)}")
 
-    # Print all rows of the csv file without the umeta_id column and all its rows, append the new columns to the csv sort the rows by user_id
+    '''
+
+    
+    Print all rows of the csv file without the umeta_id column, \
+    append the new columns to the csv, sort the rows by user_id which is an integer
+    '''
+    # for unification of data, change all instances of 'userid' to 'user_id'
+    df['meta_key'] = df['meta_key'].replace('userid', 'user_id')
+
     data = df.drop('umeta_id', axis=1).append(pd.DataFrame(
-        columns=new_columns)).sort_values(by=['userid'])
+        columns=new_columns)).sort_values(by='user_id', ascending=True)
 
-    # Print the first 5 rows of data to the console
-    # print(data)
-
-    # Populate the new columns with the meta_value of the corresponding meta_key and user_id, rows with NaN leave them blank and print the first all rows of data to the console
-    data = data.groupby(['userid', 'meta_key'])[
+    '''
+    Populate the new columns with the meta_value of the corresponding meta_key and user_id, \
+    rows with NaN leave them blank and print the first all rows of data to the console
+    
+    '''
+    data = data.groupby(['userid', 'user_id', 'meta_key'])[
         'meta_value'].first().unstack().fillna('')
     print(data)
 
-    # print(data.groupby(['userid', 'meta_key'])['meta_value'].apply(
-    #     lambda x: x.values.tolist()).unstack())
-
-    # Write data to a csv file
-    data.to_csv('cleaned_usermeta.csv')
+    '''
+    Write data to a csv file and save the csv file in the same directory as \
+    the original csv file, append the word "usermeta_cleaned" to the file name
+    '''
+    data.to_csv(os.path.splitext(sys.argv[1])[0] + '_usermeta_cleaned.csv')
 
 
 if __name__ == "__main__":
