@@ -222,6 +222,12 @@ def pandas_read_csv():
     # make unique list of meta_key as new columns
     new_columns = df['meta_key'].unique()
 
+    # if there's a userid column, sort using that or use user_id column
+    if 'userid' in df.columns:
+        df = df.sort_values(by=['userid'])
+    else:
+        df = df.sort_values(by=['user_id'])
+
     '''
     Print the number of rows that were deleted
     '''
@@ -233,20 +239,36 @@ def pandas_read_csv():
     Print all rows of the csv file without the umeta_id column, \
     append the new columns to the csv, sort the rows by user_id which is an integer
     '''
-    # for unification of data, change all instances of 'userid' to 'user_id'
-    df['meta_key'] = df['meta_key'].replace('userid', 'user_id')
-
-    data = df.drop('umeta_id', axis=1).append(pd.DataFrame(
-        columns=new_columns)).sort_values(by='user_id', ascending=True)
+    # if the file has the column umeta_id, drop it.
+    if 'umeta_id' in df.columns:
+        data = df.drop('umeta_id', axis=1).append(pd.DataFrame(
+            columns=new_columns))
+    else:
+        data = df.append(pd.DataFrame(
+            columns=new_columns))
 
     '''
     Populate the new columns with the meta_value of the corresponding meta_key and user_id, \
     rows with NaN leave them blank and print the first all rows of data to the console
     
     '''
-    data = data.groupby(['userid', 'user_id', 'meta_key'])[
-        'meta_value'].first().unstack().fillna('')
-    print(data)
+    if 'userid' in df.columns:
+        df['userid'] = df['userid'].astype(int)
+        df.sort_values(by=['userid'], inplace=True)
+        # df.to_csv('new.csv', columns=new_columns, index=False)
+        data = df.groupby(['userid', 'meta_key'])[
+            'meta_value'].first().unstack().fillna('')
+        print(data.head())
+    elif 'user_id' in df.columns:
+        df['user_id'] = df['user_id'].astype(int)
+        df.sort_values(by=['user_id'], inplace=True)
+        # df.to_csv('new.csv', columns=new_columns, index=False)
+        data = df.groupby(['user_id', 'meta_key'])[
+            'meta_value'].first().unstack().fillna('')
+        print(data.head())
+
+    else:
+        print("No userid or user_id column found")
 
     '''
     Write data to a csv file and save the csv file in the same directory as \
