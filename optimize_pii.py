@@ -28,6 +28,7 @@ def insert_quotes(file_name):
         text = re.sub(r'(?<!\\)"', r'\\"', text)
         text = re.sub(r'(?<!\\)\\', r'\\\\', text)
         text = re.sub(r'(?<!\\)([^\s,]+)', r'"\1"', text)
+        text = re.sub(r"'", r'', text)
         return text
 
 
