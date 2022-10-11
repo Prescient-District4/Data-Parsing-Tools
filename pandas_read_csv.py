@@ -254,20 +254,56 @@ def pandas_read_csv():
         'metaboxhidden_shop_subscription', 'metaboxhidden_toplevel_page_affiliate-wp',
         'screen_layout_carts', 'screen_layout_dashboard', 'screen_layout_page', 'screen_layout_product', 'screen_layout_wc_user_membership', 'show_try_gutenberg_panel', 'tgmpa_dismissed_notice_wp - mail-smtp', 'uc_notice_dissmissed_birthday2_sale1', 'users_per_page',
         'wfls - dismiss-wfls-woocommerce-integration-notice', 'wp__stripe_customer_id',
-        'closedpostboxes_sfwd-lessons', 'closedpostboxes_shop_coupon', 'closedpostboxes_shop_subscription', 'closedpostboxes_toplevel_page_affiliate-wp', 'course_19095_access_from', 'course_completed_19095', 'course_points', 'dismissed_regenerating_thumbnails_notice', 'edit_dt360_showcase_per_page', 'edit_product_per_page', 'edit_sfwd-lessons_per_page', 'edit_shop_order_per_page', 'gf_dimissed_2065a6397034ea4ef8b8e91094464058', 'gf_dimissed_39452b5a831377d8deded567012cf93a', 'gf_dimissed_4a3590d936bec5c5791537cf3e54f673', 'gf_dimissed_5de7e8d493e43f2271673c02985f94f4', 'gf_dimissed_ed634629e6cdb4c967062b42ca8a7ff0', 'gform_entries_screen_options', 'gform_forms_per_page', 'gform_recent_forms',
+        'closedpostboxes_sfwd-lessons', 'closedpostboxes_shop_coupon', 'closedpostboxes_shop_subscription', 'closedpostboxes_toplevel_page_affiliate-wp', 'course_19095_access_from', 'course_completed_19095', 'course_points', 'dismissed_regenerating_thumbnails_notice', 'edit_dt360_showcase_per_page', 'edit_product_per_page', 'edit_sfwd-lessons_per_page', 'edit_shop_order_per_page', 'gf_dimissed_2065a6397034ea4ef8b8e91094464058', 'gf_dimissed_39452b5a831377d8deded567012cf93a', 'gf_dimissed_4a3590d936bec5c5791537cf3e54f673', 'gf_dimissed_5de7e8d493e43f2271673c02985f94f4',
+        'gf_dimissed_ed634629e6cdb4c967062b42ca8a7ff0', 'gform_entries_screen_options', 'gform_forms_per_page', 'gform_recent_forms',
         'meta-box-order_carts',
-        'meta-box-order_wc_user_membership', 'metaboxhidden_dt360_showcase',
-        'metaboxhidden_elementor_library', 'metaboxhidden_sfwd-lessons', 'metaboxhidden_shop_coupon',  'tgmpa_dismissed_notice_wp-mail-smtp', 'wfls-dismiss-wfls-woocommerce-integration - notice', 'wp_backwpup_dinotopt_JVQWWZJAKVZSASDBOBYHSIDBNZSCAR3JOZSSAWLPOVZCAUTBORUW4Z34NB2HI4DTHIXS653POJSHA4TFONZS433SM4XXG5LQOBXXE5BPOBWHKZ3JNYXWEYLDNN3XA5LQF5ZGK5TJMV3XGL34',
+        'meta-box-order_wc_user_membership',
+        'metaboxhidden_dt360_showcase',
+        'metaboxhidden_elementor_library',
+        'metaboxhidden_sfwd-lessons', 'metaboxhidden_shop_coupon',
+        'tgmpa_dismissed_notice_wp-mail-smtp',
+        'wfls-dismiss-wfls-woocommerce-integration - notice', 'wp_backwpup_dinotopt_JVQWWZJAKVZSASDBOBYHSIDBNZSCAR3JOZSSAWLPOVZCAUTBORUW4Z34NB2HI4DTHIXS653POJSHA4TFONZS433SM4XXG5LQOBXXE5BPOBWHKZ3JNYXWEYLDNN3XA5LQF5ZGK5TJMV3XGL34',
         'wp_elementor_connect_common_data', 'wp_mail_smtp_dash_widget_lite_hide_graph', 'wp_mail_smtp_dash_widget_lite_hide_summary_report_email_block', 'wp_media_library_mode',
         'wp_meta - box-order_inc_popup',
         'wp_wpseo-suggested-plugin - yoast-woocommerce-seo',
         'wp_yoast_notifications',
         'wfls-dismiss-wfls-woocommerce-integration-notice',
-        'wp_meta-box - order_inc_popup', 'wp_wpseo-suggested-plugin-yoast-woocommerce-seo',
-        ' wfls-dismiss-wfls-woocommerce-integration-notice',
+        'wp_meta-box - order_inc_popup',
+        'wp_wpseo-suggested-plugin-yoast-woocommerce-seo',
+        'wfls-dismiss-wfls-woocommerce-integration-notice',
         'wp_meta -  box-order_inc_popup',
         'wp_yoast_notifications',
-        'wp_meta-box-order_inc_popup'
+        'wp_meta-box-order_inc_popup',
+        'closedpostboxes_family',
+        'meta-box-order_watermark',
+        'metaboxhidden_family',
+        'wplu_googlesitekit_access_token',
+        'wplu_googlesitekit_access_token_created_at',
+        'wplu_googlesitekit_access_token_expires_in',
+        'wplu_googlesitekit_auth_scopes',
+        'wplu_googlesitekit_profile',
+        'wplu_googlesitekit_refresh_token',
+        'wplu_googlesitekit_site_verification_file',
+        'wplu_googlesitekit_site_verified_meta',
+        'wplu_googlesitekit_transient_googlesitekit_user_input_settings',
+        'metaboxhidden_watermark',
+        'wplu_capabilities',
+        'wplu_googlesitekitpersistent_initial_version',
+        'wplu_googlesitekit_user_input_state',
+        'wplu_user-settings'
+        'wplu_googlesitekit_additional_auth_scopes',
+        'wplu_googlesitekit_transient_timeout_googlesitekit_user_input_settings',
+        'wplu_googlesitekitpersistent_dismissed_tours',
+        'wplu_googlesitekit_additional_auth_scopes'
+        'wplu_dashboard_quick_press_last_post_id',
+        'wplu_googlesitekit_redirect_url',
+        'wplu_user - settings',
+        'wplu_user-settings-time',
+        'wplu_user_level',
+        'closedpostboxes_watermark',
+        'wplu_googlesitekit_additional_auth_scopes',
+        'wplu_user-settings',
+        'wplu_dashboard_quick_press_last_post_id'
 
     ]
 
@@ -290,16 +326,15 @@ def pandas_read_csv():
 
     '''
 
-    
     Print all rows of the csv file without the umeta_id column, \
     append the new columns to the csv, sort the rows by user_id which is an integer
     '''
     # if the file has the column umeta_id, drop it.
     if 'umeta_id' in df.columns:
-        data = df.drop('umeta_id', axis=1).append(pd.DataFrame(
+        df.drop('umeta_id', axis=1).append(pd.DataFrame(
             columns=new_columns))
     else:
-        data = df.append(pd.DataFrame(
+        df.append(pd.DataFrame(
             columns=new_columns))
 
     '''
@@ -310,14 +345,12 @@ def pandas_read_csv():
     if 'userid' in df.columns:
         df['userid'] = df['userid'].astype(int)
         df.sort_values(by=['userid'], inplace=True)
-        # df.to_csv('new.csv', columns=new_columns, index=False)
         data = df.groupby(['userid', 'meta_key'])[
             'meta_value'].first().unstack().fillna('')
         print(data.head())
     elif 'user_id' in df.columns:
         df['user_id'] = df['user_id'].astype(int)
         df.sort_values(by=['user_id'], inplace=True)
-        # df.to_csv('new.csv', columns=new_columns, index=False)
         data = df.groupby(['user_id', 'meta_key'])[
             'meta_value'].first().unstack().fillna('')
         print(data.head())
