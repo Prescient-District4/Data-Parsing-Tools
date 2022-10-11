@@ -36,7 +36,7 @@ def main():
     if len(sys.argv) != 2:
         print('Usage: {} <input_file>'.format(sys.argv[0]))
         sys.exit(1)
-    with open('not_pii_output.txt', 'w') as f:
+    with open('not_pii_output.py', 'w') as f:
         f.write(insert_quotes(sys.argv[1]))
 
 
